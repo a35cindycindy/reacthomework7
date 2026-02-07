@@ -6,8 +6,8 @@ const API_PATH = import.meta.env.VITE_API_PATH;
 function Login({getProducts, setIsAuth}) {
        // 表單資料狀態(儲存登入表單輸入)
         const [formData, setFormData] = useState({
-            username: "a35cindyvip@gmail.com",
-            password: "iambee20060130",
+            username: "",
+            password: "",
         });
       // 處理表單輸入變更
         const handleInputChange = (e) => {
