@@ -3,6 +3,6 @@ import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/reacthomework4/',
+  base: '/reacthomework5/',
   plugins: [react()],
 })
