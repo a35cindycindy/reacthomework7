@@ -255,7 +255,18 @@ function Checkout(){
                     <th scope="row">{item.product.title}</th>
                     <td>                 
                         <div className="input-group input-group-sm">
-                            <input type="number" aria-label="sizing example input" aria-describedby="input-group-sm" className="form-control" min="1"  defaultValue={item.qty} onChange={(e) => updateCart(item.id, item.product.id, e.target.value)}/>
+                            <input type="number" 
+                            key={`${item.id}-${item.qty}`}
+                            aria-label="sizing example input" 
+                            aria-describedby="input-group-sm" 
+                            className="form-control" min="1"  
+                            defaultValue={item.qty}
+                            onChange={(e) => 
+                            {const newQty = Number(e.target.value);
+                            if (newQty >= 1) {
+                            updateCart(item.id, item.product.id, newQty);}    
+                            // updateCart(item.id, item.product.id, Number(e.target.value))
+                            }}/>
                             <div className="input-group-text" id ="">{item.product.unit}</div>
                         </div>
                     </td>
