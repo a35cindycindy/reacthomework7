@@ -14,6 +14,12 @@ function FrontendLayout(){
                 <li className="nav-item">
                     <Link className="nav-link" to="/cart">Cart</Link>
                 </li>
+                 <li className="nav-item">
+                    <Link className="nav-link" to="/checkout">Checkout</Link>
+                </li>
+                <li className="nav-item">
+                    <Link className="nav-link" to="/login">Login</Link>
+                </li>                               
             </ul>
         </header>
         <main>
