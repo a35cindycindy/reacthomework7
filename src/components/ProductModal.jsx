@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from "axios";
+import { useDispatch } from 'react-redux';
+import { createAsyncMessage } from "../slice/messageSlice";
 const API_BASE = import.meta.env.VITE_API_BASE;
 const API_PATH = import.meta.env.VITE_API_PATH;
 function ProductModal({
@@ -11,6 +13,7 @@ function ProductModal({
 
 }) {
   const [tempData,setTempData] = useState(templateProduct);
+  const dispatch = useDispatch();
   useEffect(()=>{
     setTempData(templateProduct);
   },[templateProduct])
@@ -82,11 +85,14 @@ function ProductModal({
 
       }};
     try {
+      let response;
       await axios[method](url, productData);
+      response = await axios.put(url, productData);
+      dispatch(createAsyncMessage(response.data));
       getProducts();
       closeModal();
     } catch (error) {
-      console.log(error.response);
+      dispatch(createAsyncMessage(error.response.data));
     }
   }
 // 刪除產品

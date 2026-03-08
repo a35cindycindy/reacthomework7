@@ -1,8 +1,11 @@
 import { useEffect, useState, useRef } from 'react'
 import axios from "axios";
 import * as bootstrap from 'bootstrap';
-// import 'bootstrap/dist/css/bootstrap.min.css'
-import "./assets/style.css";
+import Pagination from '../../components/Pagination';
+import ProductModal from '../../components/ProductModal';
+import { useDispatch } from "react-redux";
+import "../../assets/style.css";
+import { createAsyncMessage } from "../../slice/messageSlice";
 const API_BASE = import.meta.env.VITE_API_BASE;
 const API_PATH = import.meta.env.VITE_API_PATH;
 
@@ -20,11 +23,8 @@ const INITIAL_TEMPLATE_DATA = {
   imagesUrl: [],
   size:""
 };
-import './App.css'
-import ProductModal from './components/ProductModal';
-import Pagination from './components/Pagination';
-import Login from './views/Login';
-function App() {
+
+function AdminProducts() {
 
   // 登入狀態管理(控制顯示登入或產品頁）
   const [isAuth, setIsAuth] = useState(false);
@@ -37,9 +37,9 @@ function App() {
   const productModelRef = useRef(null);
   //處理分頁
   const [pagination, setPagination] = useState({});
+  //發送訊息相關
+  const dispatch = useDispatch();
 
-
-  
 
 // 取得產品列表
   const getProducts = async (page=1) => {
@@ -50,7 +50,7 @@ function App() {
       setProducts(response.data.products);
       setPagination(response.data.pagination);
     } catch (error) {
-      console.log( error.response);
+       dispatch(createAsyncMessage(error.response.data));
     }
   }
 
@@ -61,7 +61,7 @@ const checkLogin = async () => {
   try {
 
       const res = await axios.post(`${API_BASE}/api/user/check`);
-      console.log("Token 驗證結果：", res.data);
+      // console.log("Token 驗證結果：", res.data);
       setIsAuth(true);
       getProducts();
     }
@@ -76,7 +76,7 @@ const checkLogin = async () => {
       .find((row) => row.startsWith("hexToken="))
       ?.split("=")[1];
 
-    console.log("目前 Token：", token);
+    // console.log("目前 Token：", token);
 
     if (token) {
       axios.defaults.headers.common.Authorization = token;;
@@ -107,12 +107,9 @@ const closeModal = () => {
 
 
   return (
-    <>{
-        !isAuth ? (    
-          <Login getProducts={getProducts} setIsAuth={setIsAuth} />
-        ) : (
-        <div className="container">
-              <h2>產品列表</h2>
+    <>
+           <div className="container">
+              <h2>後台產品列表</h2>
               <div className="text-end mt-4">
               <button
                 type="button"
@@ -163,18 +160,14 @@ const closeModal = () => {
                 </tbody>
               </table>
               <Pagination pagination={pagination} onChangePage={getProducts}  />
+           </div>    
+            <ProductModal 
+              modalType={modalType}
+              templateProduct={templateProduct}
+              closeModal={closeModal}
+              getProducts={getProducts}
 
-
-        </div>)
-        
-    }
-    <ProductModal 
-      modalType={modalType}
-      templateProduct={templateProduct}
-      closeModal={closeModal}
-      getProducts={getProducts}
-
-    />
+            />
 
 
 
@@ -182,4 +175,4 @@ const closeModal = () => {
   )
 }
 
-export default App
+export default AdminProducts

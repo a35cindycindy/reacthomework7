@@ -44,9 +44,7 @@ function Login() {
             
             document.cookie = `hexToken=${token};expires=${new Date(expired)};path=/`;
             axios.defaults.headers.common.Authorization = token;
-
-            alert("登入成功！");
-            navigate("/products");
+            navigate("/admin/products");
           }
         }, [authData, navigate]);
 
